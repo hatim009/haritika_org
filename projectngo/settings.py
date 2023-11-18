@@ -44,6 +44,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     'UNAUTHENTICATED_USER': 'users.models.AnonymousUser'
 }
 
@@ -100,6 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
+AUTHENTICATION_BACKENDS = ['users.auth.backends.UserAuthBackend']
 
 
 # Internationalization

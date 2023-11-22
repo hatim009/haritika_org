@@ -1,6 +1,5 @@
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .permissions import IsAdmin, IsSelf
 from .models import User
@@ -9,7 +8,6 @@ from rest_framework.decorators import action
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdmin]
     serializer_class = UserSerializer
     queryset = User.objects.all()

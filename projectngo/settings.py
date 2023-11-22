@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'farmers',
     'beneficiaries',
     'plots',
-    'users'
+    'users',
+    'local_directories',
 ]
 
 REST_FRAMEWORK = {

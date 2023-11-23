@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.urls import include, path
 from rest_framework.authtoken import views
-from users.urls import router
-from local_directories.urls import urlpatterns as local_directory_urls
+from users.urls import router as users_router
+from local_directories.urls import urlpatterns as local_directory_urlpatterns
+from farmers.urls import router as farmers_router
 
 
 urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
-    path('', include(router.urls)),
-    path('', include(local_directory_urls)),
+    path('', include(users_router.urls)),
+    path('', include(local_directory_urlpatterns)),
+    path('', include(farmers_router.urls)),
 ]

@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import OR
 from rest_framework.response import Response
-from .permissions import IsAdmin, IsSelf
+from .permissions import IsAdmin, IsAdminOrSelf
 from .models import User
 from .serializers import UserSerializer, PasswordSerializer
 from rest_framework.decorators import action
@@ -13,7 +13,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
 
     @action(detail=True, methods=['put'], name='Change Password', 
-            permission_classes=(IsSelf,))
+            permission_classes=(IsAdminOrSelf,))
     def password(self, request, pk=None):
         user = self.get_object()
         serializer = PasswordSerializer(data=request.data)

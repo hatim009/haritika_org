@@ -14,7 +14,7 @@ class IsAdmin(BasePermission):
 
 class IsSupervisor(BasePermission):
     """
-    Allows access only to admin users.
+    Allows access only to supervisors.
     """
 
     def has_permission(self, request, view):
@@ -23,7 +23,7 @@ class IsSupervisor(BasePermission):
 
 class IsSurveyor(BasePermission):
     """
-    Allows access only to admin users.
+    Allows access only to surveyors.
     """
 
     def has_permission(self, request, view):
@@ -37,3 +37,11 @@ class IsSelf(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return bool(request.user == obj)
+    
+
+class IsAdminOrSelf(BasePermission):
+    def has_permission(self, request, view):
+        return bool(IsAdmin().has_permission(request, view)) or bool(IsSelf().has_permission())
+
+    def has_object_permission(self, request, view, obj):
+        return bool(IsAdmin().has_object_permission(request, view, obj)) or bool(IsSelf().has_object_permission(request, view, obj))

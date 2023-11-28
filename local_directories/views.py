@@ -15,7 +15,7 @@ class StatesDirectoryView(views.APIView):
 class DistrictsDirectoryView(views.APIView):
     
     def get(self, request, state_code):
-        districts_directory = DistrictsDirectory.objects.filter(state_code=state_code)
+        districts_directory = DistrictsDirectory.objects.filter(state=state_code)
         if districts_directory.exists():
             districts_directory_serializer = DistrictsDirectorySerializer(districts_directory, many=True)
             return Response({'districtsDirectory': districts_directory_serializer.data})
@@ -26,7 +26,7 @@ class DistrictsDirectoryView(views.APIView):
 class BlocksDirectoryView(views.APIView):
     
     def get(self, request, district_code):
-        blocks_directory = BlocksDirectory.objects.filter(district_code=district_code)
+        blocks_directory = BlocksDirectory.objects.filter(district=district_code)
         if blocks_directory.exists():
             blocks_directory_serializer = BlocksDirectorySerializer(blocks_directory, many=True)
             return Response({'blocksDirectory': blocks_directory_serializer.data})
@@ -37,7 +37,7 @@ class BlocksDirectoryView(views.APIView):
 class VillagesDirectoryView(views.APIView):
     
     def get(self, request, block_code):
-        villages_directory = VillagesDirectory.objects.filter(block_code=block_code)
+        villages_directory = VillagesDirectory.objects.filter(block=block_code)
         if villages_directory.exists():
             villages_directory_serializer = VillagesDirectorySerializer(villages_directory, many=True)
             return Response({'villagesDirectory': villages_directory_serializer.data})

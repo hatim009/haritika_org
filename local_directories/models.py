@@ -13,7 +13,7 @@ class StatesDirectory(models.Model):
 class DistrictsDirectory(models.Model):
     code = models.IntegerField(_('district code'), primary_key=True, unique=True)
     name = models.CharField(_('district name'), max_length=150)
-    state_code = models.ForeignKey('StatesDirectory', db_column='state_code', on_delete=models.CASCADE)
+    state = models.ForeignKey('StatesDirectory', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'districts_directory'
@@ -22,7 +22,7 @@ class DistrictsDirectory(models.Model):
 class BlocksDirectory(models.Model):
     code = models.IntegerField(_('block code'), primary_key=True, unique=True)
     name = models.CharField(_('block name'), max_length=150)
-    district_code = models.ForeignKey('DistrictsDirectory', db_column='district_code', on_delete=models.CASCADE)
+    district = models.ForeignKey('DistrictsDirectory', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'blocks_directory'
@@ -31,7 +31,7 @@ class BlocksDirectory(models.Model):
 class VillagesDirectory(models.Model):
     code = models.IntegerField(_('village code'), primary_key=True, unique=True)
     name = models.CharField(_('village name'), max_length=150)
-    block_code = models.ForeignKey('BlocksDirectory', db_column='block_code', on_delete=models.CASCADE)
+    block = models.ForeignKey('BlocksDirectory', on_delete=models.CASCADE)
     
     class Meta:
         db_table = 'villages_directory'

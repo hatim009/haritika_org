@@ -13,18 +13,18 @@ class DistrictsDirectorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = DistrictsDirectory
-        fields = '__all__'
+        exclude = ['state']
 
 
 class BlocksDirectorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = BlocksDirectory
-        fields = '__all__'
+        exclude = ['district']
 
 
 class VillagesDirectorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = VillagesDirectory
-        fields = '__all__'
+        exclude = ['block']

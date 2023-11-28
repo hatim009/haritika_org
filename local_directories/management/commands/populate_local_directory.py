@@ -26,13 +26,13 @@ class Command(BaseCommand):
                             state_directory, state_created = StatesDirectory.objects.get_or_create(code=row['State Code'], name=row['State Name'])
                             print('{0}: {1}\n'.format(state_directory.name, state_created))
                             
-                            district_directory, district_created = DistrictsDirectory.objects.get_or_create(code=row['District Code'], name=row['District Name'], state_code=state_directory)
+                            district_directory, district_created = DistrictsDirectory.objects.get_or_create(code=row['District Code'], name=row['District Name'], state=state_directory)
                             print('{0}: {1}\n'.format(district_directory.name, district_created))
                             
-                            block_directory, block_created  = BlocksDirectory.objects.get_or_create(code=row['Block Code'], name=row['Block Name'], district_code=district_directory)
+                            block_directory, block_created  = BlocksDirectory.objects.get_or_create(code=row['Block Code'], name=row['Block Name'], district=district_directory)
                             print('{0}: {1}\n'.format(block_directory.name, block_created))
 
-                            village_directory, village_created = VillagesDirectory.objects.get_or_create(code=row['Village Code'], name=row['Village Name'], block_code=block_directory)
+                            village_directory, village_created = VillagesDirectory.objects.get_or_create(code=row['Village Code'], name=row['Village Name'], block=block_directory)
                             print('{0}: {1}\n'.format(village_directory.name, village_created))
                             
         except RuntimeError:

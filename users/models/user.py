@@ -36,19 +36,7 @@ class User(AbstractBaseUser):
 
     username_validator = UnicodeUsernameValidator()
 
-    user_id = models.AutoField(_("user id"), primary_key=True)
-    username = models.CharField(
-        _("username"),
-        max_length=150,
-        unique=True,
-        help_text=_(
-            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-        ),
-        validators=[username_validator],
-        error_messages={
-            "unique": _("A user with that username already exists."),
-        },
-    )    
+    user_id = models.AutoField(_("user id"), primary_key=True)   
     user_type = models.CharField(_("user type"), max_length=20, choices=UserType.choices)
     name = models.CharField(_("name"), max_length=200)
     gender = models.CharField(_("gender"), max_length=20, choices=Gender.choices)

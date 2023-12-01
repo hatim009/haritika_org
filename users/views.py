@@ -29,38 +29,9 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     def destroy(self, request, *args, **kwargs):
         user = self.get_object()
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user.is_active = False
-            user.save()
-            return Response({'status': 'User marked as inactive'})
-        else:
-            return Response(serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
-
-    """
-    Assign a block to a User.
-    """
-    @action(detail=True, methods=['post'], url_path='blocks/(?P<block_code>[^/.]+)', permission_classes=(IsAdmin,))
-    def block(self, request, pk=None, block_code=None, **kwargs):
-        user_block_serializer = UserBlockSerializer(data={'user':pk, 'block':block_code})
-        if user_block_serializer.is_valid():
-            user_block_serializer.save()
-            return Response({'status': 'block assigned successfully'})
+        user.is_active = False
+        user.save()
+        return Response({'status': 'User marked as inactive'})
         
-        return Response(user_block_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    """
-    Remove a block from a User.
-    """
-    @block.mapping.delete
-    def removeBlock(self, request, pk=None, block_code=None, **kwargs):
-        try:
-            user_block = UserBlock.objects.get(user=pk, block=block_code)
-            user_block.delete()
-        except UserBlock.DoesNotExist:
-            pass
-
-        return Response({'status': 'block successfully removed.'})
             
         

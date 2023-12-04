@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'beneficiaries',
     'plots',
     'users',
+    'auth',
     'local_directories',
+    'files_manager',
 ]
 
 REST_FRAMEWORK = {
@@ -104,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
-AUTHENTICATION_BACKENDS = ['users.auth.backends.UserAuthBackend']
+AUTHENTICATION_BACKENDS = ['auth.backends.UserAuthBackend']
 
 
 # Internationalization

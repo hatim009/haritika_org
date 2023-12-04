@@ -33,10 +33,7 @@ class User(AbstractBaseUser):
         ADMIN = 'ADMIN', _('Admin')
         SUPERVISOR = 'SUPERVISOR', _('Supervisor')
         SURVEYOR = 'SURVEYOR', _('Surveyor')
-
-    username_validator = UnicodeUsernameValidator()
-
-    user_id = models.AutoField(_("user id"), primary_key=True)   
+ 
     user_type = models.CharField(_("user type"), max_length=20, choices=UserType.choices)
     name = models.CharField(_("name"), max_length=200)
     gender = models.CharField(_("gender"), max_length=20, choices=Gender.choices)
@@ -55,7 +52,7 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'phone_number'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['user_type']
 

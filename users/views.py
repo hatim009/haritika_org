@@ -23,7 +23,17 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
-        
+    
+    """
+    Destroy a model instance.
+    """
+    @action(detail=True, methods=['put'], name='Activate User')
+    def activate(self, request, *args, **kwargs):
+        user = self.get_object()
+        user.is_active = True
+        user.save()
+        return Response({'status': 'User activated successfully.'})
+
     """
     Destroy a model instance.
     """
@@ -33,5 +43,4 @@ class UserViewSet(viewsets.ModelViewSet):
         user.save()
         return Response({'status': 'User marked as inactive'})
         
-            
         

@@ -8,7 +8,7 @@ class FarmerViewSet(viewsets.ModelViewSet):
     queryset = Farmer.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(added_by=self.request.user.username, last_edited_by=self.request.user.username)
+        serializer.save(added_by=self.request.user, last_edited_by=self.request.user)
 
     def perform_update(self, serializer):
-        serializer.save(last_edited_by=self.request.user.username)
+        serializer.save(last_edited_by=self.request.user)

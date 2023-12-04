@@ -24,6 +24,7 @@ class Farmer(models.Model):
 
     farmer_id = models.BigAutoField(primary_key=True)
     id_hash = models.CharField(max_length=128, unique=True, validators=[MinLengthValidator(128)])
+    profile_photo = models.ForeignKey('files_manager.File', db_column='profile_photo', related_name='profile_photo', on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=100)
     guardian_name = models.CharField(max_length=100)
     date_of_birth = models.DateField()
@@ -31,16 +32,13 @@ class Farmer(models.Model):
     category = models.CharField(max_length=20, choices=Category.choices, default=Category.GENERAL)
     gender = models.CharField(max_length=20, choices=Gender.choices)
     address = models.CharField(max_length=150)
-    state = models.ForeignKey('local_directories.StatesDirectory', on_delete=models.DO_NOTHING)
-    district = models.ForeignKey('local_directories.DistrictsDirectory', on_delete=models.DO_NOTHING)
-    block = models.ForeignKey('local_directories.BlocksDirectory', on_delete=models.DO_NOTHING)
     village = models.ForeignKey('local_directories.VillagesDirectory', on_delete=models.DO_NOTHING)
-    id_front_image_s3_location = models.TextField()
-    id_back_image_s3_location = models.TextField()
+    id_front_image = models.ForeignKey('files_manager.File', db_column='id_front_image', related_name='id_front_image', on_delete=models.DO_NOTHING)
+    id_back_image = models.ForeignKey('files_manager.File', db_column='id_back_image', related_name='id_back_image', on_delete=models.DO_NOTHING)
     income_level = models.CharField(max_length=20, choices=IncomeLevel.choices)
-    added_by = models.CharField(max_length=150, editable=False)
+    added_by = models.ForeignKey('users.User', editable=False, related_name='added_by', on_delete=models.DO_NOTHING)
     added_on = models.DateTimeField(auto_now_add=True)
-    last_edited_by = models.CharField(max_length=150)
+    last_edited_by = models.ForeignKey('users.User', related_name='last_edited_by', on_delete=models.DO_NOTHING)
     last_edited_on = models.DateTimeField(auto_now=True)
 
     class Meta:

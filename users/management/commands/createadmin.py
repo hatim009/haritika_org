@@ -5,7 +5,6 @@ from users.models import UserManager
 
 
 class Command(BaseCommand):
-    help = "Closes the specified poll for voting"
 
     def add_arguments(self, parser):
         parser.add_argument('-ph', '--phone_number', type=str, required=True)

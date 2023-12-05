@@ -9,7 +9,7 @@ from rest_framework.decorators import action
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdmin]
     serializer_class = UserSerializer
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_active=True).all()
 
     @action(detail=True, methods=['put'], name='Change Password', 
             permission_classes=(IsAdminOrSelf,))

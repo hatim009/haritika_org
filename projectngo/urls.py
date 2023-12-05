@@ -17,6 +17,7 @@ Including another URLconf
 from django.urls import include, path
 from users.urls import router as users_router
 from auth.urls import urlpatterns as auth_urlpatterns
+from projects.urls import urlpatterns as projects_urlpatterns
 from local_directories.urls import urlpatterns as local_directory_urlpatterns
 from farmers.urls import router as farmers_router
 
@@ -26,4 +27,5 @@ urlpatterns = [
     path('', include(users_router.urls)),
     path('', include(local_directory_urlpatterns)),
     path('', include(farmers_router.urls)),
+    path('', include(projects_urlpatterns)),
 ]

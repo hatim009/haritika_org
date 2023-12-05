@@ -1,10 +1,8 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import empty
-from .models import User, UserBlock
+from users.models import UserBlock
 from local_directories.models import BlocksDirectory
-from django.db import transaction
-
 
 
 class UserBlockListSerializer(serializers.ListSerializer):
@@ -55,51 +53,3 @@ class UserBlockSerializer(serializers.ModelSerializer):
         depth = 3
         fields = ['block']
         list_serializer_class = UserBlockListSerializer
-
-
-class UserSerializer(serializers.ModelSerializer):
-    blocks = UserBlockSerializer(many=True, source='assigned_blocks')
-    
-    class Meta:
-        model = User
-        exclude = ['password', 'last_updated', 'last_login']
-        read_only_fields = ['is_active', 'date_joined']
-
-    """
-    There is a bug in rest_framework.serializers.ListSerializer.get_field() where 
-        "if html.is_html_input(dictionary):" on line 604
-    returns True for non-html input, hence need to override.
-    """
-    def get_value(self, dictionary):
-        return dictionary.get(self.field_name, empty)
-
-    def update(self, instance, validated_data):
-        with transaction.atomic():
-            instance.name = validated_data.get('name', instance.name)
-            instance.email = validated_data.get('email', instance.email)
-            instance.gender = validated_data.get('gender', instance.gender)
-            instance.user_type = validated_data.get('user_type', instance.user_type)
-            instance.save()
-
-            if validated_data.get('assigned_blocks'):
-                self.fields['blocks'].update(instance, validated_data['assigned_blocks'])
-            else:
-                raise ValidationError(['Atleast one block should be assigned to the user.'])
-
-        return instance
-    
-    def create(self, validated_data):
-        with transaction.atomic():
-            assigned_blocks = validated_data.pop('assigned_blocks')
-            user = User(**validated_data)
-            user.save()
-            if assigned_blocks:
-                self.fields['blocks'].create(user, assigned_blocks)
-
-        return user
-
-
-class PasswordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['password']

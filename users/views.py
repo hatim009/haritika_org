@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .permissions import IsAdmin, IsAdminOrSelf
+from auth.permissions import IsAdmin, IsAdminOrSelf
 from .models import User, UserBlock
 from .serializers import UserSerializer, PasswordSerializer, UserBlockSerializer
 from rest_framework.decorators import action

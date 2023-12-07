@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'projects',
     'farmers',
+    'land_parcels',
     'beneficiaries',
     'plots',
     'users',

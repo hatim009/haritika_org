@@ -10,6 +10,7 @@ class Farmer(models.Model):
         SC = 'SC', _('ScheduleCastes')
         ST = 'ST', _('ScheduleTribes')
         OBC = 'OBC', _('OtherBackwardClass')
+        MINORITIES = 'MINORITIES', _('Minorities')
 
     class Gender(models.TextChoices):
         MALE = 'MALE', _('Male')

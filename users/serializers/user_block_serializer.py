@@ -53,3 +53,6 @@ class UserBlockSerializer(serializers.ModelSerializer):
         depth = 3
         fields = ['block']
         list_serializer_class = UserBlockListSerializer
+
+    def to_representation(self, instance):
+        return super().to_representation(instance)['block']

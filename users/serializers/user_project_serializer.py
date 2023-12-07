@@ -53,3 +53,6 @@ class UserProjectSerializer(serializers.ModelSerializer):
         fields = ['project']
         depth = 2
         list_serializer_class = UserProjectListSerializer
+
+    def to_representation(self, instance):
+        return super().to_representation(instance)['project']

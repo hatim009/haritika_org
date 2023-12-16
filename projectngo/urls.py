@@ -21,6 +21,7 @@ from projects.urls import urlpatterns as projects_urlpatterns
 from local_directories.urls import urlpatterns as local_directory_urlpatterns
 from farmers.urls import router as farmers_router
 from land_parcels.urls import router as land_parcels_router
+from carbon_sequestration.urls import router as carbon_sequestration_router
 
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
     path('', include(farmers_router.urls)),
     path('', include(land_parcels_router.urls)),
     path('', include(projects_urlpatterns)),
+    path('', include(carbon_sequestration_router.urls)),
 ]

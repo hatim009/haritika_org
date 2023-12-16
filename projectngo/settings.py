@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'auth',
     'local_directories',
     'files_manager',
+    'carbon_sequestration',
 ]
 
 REST_FRAMEWORK = {

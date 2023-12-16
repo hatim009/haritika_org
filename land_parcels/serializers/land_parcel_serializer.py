@@ -22,7 +22,7 @@ class LandParcelSerializer(serializers.ModelSerializer):
 
     def __init__(self, instance=None, *args, **kwargs):
         super().__init__(instance=instance, *args, **kwargs)
-        if self.context['request'].method in ['PUT', 'PATCH']:
+        if self.context.get('request') and self.context['request'].method in ['PUT', 'PATCH']:
             self.fields['pictures'].set_instance(instance, instance.land_parcel_pictures.all())
 
     def create(self, validated_data):

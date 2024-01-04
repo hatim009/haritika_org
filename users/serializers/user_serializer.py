@@ -2,13 +2,13 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import empty
 from users.models import User
-from users.serializers import UserBlockSerializer, UserProjectSerializer
+from users.serializers import UserBlockSerializer, UserProjectBlockSerializer
 from django.db import transaction
 
 
 class UserSerializer(serializers.ModelSerializer):
     blocks = UserBlockSerializer(many=True, source='assigned_blocks')
-    projects = UserProjectSerializer(many=True, source='assigned_projects')
+    projects = UserProjectBlockSerializer(many=True, source='assigned_projects')
     
     class Meta:
         model = User
@@ -22,6 +22,15 @@ class UserSerializer(serializers.ModelSerializer):
     """
     def get_value(self, dictionary):
         return dictionary.get(self.field_name, empty)
+
+    def validate(self, attrs):
+        assigned_blocks = attrs['assigned_blocks'].values()
+        assigned_projects = [(project_assignment_info['project'], attrs['assigned_blocks'][block]) for id, project_assignment_info in attrs.get('assigned_projects', {}).items() for block in project_assignment_info['blocks']]
+        
+        attrs['assigned_blocks'] = assigned_blocks
+        attrs['assigned_projects'] = assigned_projects
+
+        return attrs
 
     def update(self, instance, validated_data):
         with transaction.atomic():
@@ -51,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
             
             self.fields['blocks'].create(user, assigned_blocks)
-            self.fields['blocks'].create(user, assigned_projects)
+            self.fields['projects'].create(user, assigned_projects)
 
             return user
 

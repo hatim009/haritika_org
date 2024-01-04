@@ -1,7 +1,9 @@
+import json
+
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import empty
-from users.models import UserBlock
+from users.models import User, UserBlock
 from local_directories.models import BlocksDirectory
 
 
@@ -15,15 +17,20 @@ class UserBlockListSerializer(serializers.ListSerializer):
         return dictionary.get(self.field_name, empty)
 
     def validate(self, block_codes):
-        valid_blocks = BlocksDirectory.objects.filter(code__in=block_codes)
-        valid_block_codes = [block.code for block in valid_blocks]
-        invalid_blocks = [block_code for block_code in block_codes if block_code not in valid_block_codes]
+        if not block_codes:
+            raise ValidationError(['At least 1 block should be assigned to the user.'])
+
+        valid_blocks_list = BlocksDirectory.objects.filter(code__in=block_codes)
+        valid_blocks = {block.code: block for block in valid_blocks_list}
+        invalid_blocks = [block_code for block_code in block_codes if block_code not in valid_blocks]
+
         if invalid_blocks:
             raise ValidationError(['Invalid block(s) assigned. Invalid block(s): %s'% (invalid_blocks)])
+
         return valid_blocks
 
     def to_internal_value(self, data):
-        return [int(block_code.strip()) for block_code in data.strip().split(',')]
+        return json.loads(data)
     
     def update(self, user, assigned_blocks):
         assigned_block_codes = [block.code for block in assigned_blocks]

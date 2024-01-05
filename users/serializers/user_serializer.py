@@ -40,15 +40,8 @@ class UserSerializer(serializers.ModelSerializer):
             instance.user_type = validated_data.get('user_type', instance.user_type)
             instance.save()
 
-            if validated_data.get('assigned_blocks'):
-                self.fields['blocks'].update(instance, validated_data['assigned_blocks'])
-            else:
-                raise ValidationError(['Atleast one block should be assigned to the user.'])
-            
-            if validated_data.get('assigned_projects'):
-                self.fields['projects'].update(instance, validated_data['assigned_projects'])
-            else:
-                raise ValidationError(['Atleast one project should be assigned to the user.'])
+            self.fields['blocks'].update(instance, validated_data['assigned_blocks'])
+            self.fields['projects'].update(instance, validated_data['assigned_projects'])
             
             return instance
     

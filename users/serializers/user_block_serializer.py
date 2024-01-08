@@ -32,6 +32,9 @@ class UserBlockListSerializer(serializers.ListSerializer):
     def to_internal_value(self, data):
         return json.loads(data)
     
+    def to_representation(self, data):
+        return {block_code: block for block_info in super().to_representation(data) for block_code, block in block_info.items()}
+    
     def update(self, user, assigned_blocks):
         assigned_block_codes = [block.code for block in assigned_blocks]
         curr_user_blocks = user.assigned_blocks.all()
@@ -62,4 +65,6 @@ class UserBlockSerializer(serializers.ModelSerializer):
         list_serializer_class = UserBlockListSerializer
 
     def to_representation(self, instance):
-        return super().to_representation(instance)['block']
+        block = super().to_representation(instance)['block']
+        code = block.pop('code')
+        return {code: block}

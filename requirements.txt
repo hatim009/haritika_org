@@ -2,6 +2,8 @@ asgiref==3.7.2
 csvreader==0.0.4
 distlib==0.3.7
 Django==4.2.7
+django-crispy-forms==2.1
+django-filter==23.5
 django-phonenumber-field==7.2.0
 djangorestframework==3.14.0
 filelock==3.13.1

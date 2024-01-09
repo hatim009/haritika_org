@@ -4,7 +4,7 @@ from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
 
-from auth.permissions import hasBlockPermission
+from .permissions import hasBlockPermission
 from .models import LandParcel
 from .serializers import LandParcelSerializer
 from farmers.models import Farmer

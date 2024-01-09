@@ -7,7 +7,7 @@ from .serializers import FarmerSerializer
 from .models import Farmer
 from local_directories.models import VillagesDirectory
 from users.models import User
-from auth.permissions import hasBlockPermission
+from .permissions import hasBlockPermission
 
 
 class FarmerViewSet(viewsets.ModelViewSet):

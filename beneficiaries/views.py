@@ -8,7 +8,7 @@ from .models import Beneficiary
 from farmers.models import Farmer
 from users.models import User
 from local_directories.models import VillagesDirectory
-from auth.permissions import hasParentsBlockPermission
+from .permissions import hasParentsBlockPermission
 
 
 class BeneficiaryViewset(viewsets.ModelViewSet):

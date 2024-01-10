@@ -13,7 +13,7 @@ class IsAdmin(BasePermission):
 
 class hasBlockPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
-        if IsAdmin().has_permission(request, view, obj):
+        if IsAdmin().has_permission(request, view):
             return True
 
         curr_block = None

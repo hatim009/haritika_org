@@ -8,13 +8,14 @@ from .models import Farmer
 from local_directories.models import VillagesDirectory
 from users.models import User
 from .permissions import hasBlockPermission
+from rest_framework.permissions import IsAuthenticated
 
 
 class FarmerViewSet(viewsets.ModelViewSet):
     serializer_class = FarmerSerializer
     queryset = Farmer.objects.all()
     filter_backends = [SearchFilter]
-    permission_classes = [hasBlockPermission]
+    permission_classes = [IsAuthenticated, hasBlockPermission]
     search_fields = ['farmer_id', 'id_hash', 'name', 'phone_number']
 
     def get_queryset(self):

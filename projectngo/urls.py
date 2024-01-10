@@ -16,17 +16,19 @@ Including another URLconf
 """
 from django.urls import include, path
 from users.urls import router as users_router
-from auth.urls import urlpatterns as auth_urlpatterns
 from projects.urls import urlpatterns as projects_urlpatterns
 from local_directories.urls import urlpatterns as local_directory_urlpatterns
 from farmers.urls import router as farmers_router
 from land_parcels.urls import router as land_parcels_router
 from beneficiaries.urls import router as beneficiaries_router
 from carbon_sequestration.urls import router as carbon_sequestration_router
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 
 urlpatterns = [
-    path('', include(auth_urlpatterns)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('', include(users_router.urls)),
     path('', include(local_directory_urlpatterns)),
     path('', include(farmers_router.urls)),

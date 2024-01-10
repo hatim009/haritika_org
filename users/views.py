@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response 
 from rest_framework.decorators import action
@@ -11,7 +12,7 @@ from .serializers import UserSerializer, PasswordSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdmin|IsSupervisor|IsSurveyor]
+    permission_classes = [IsAuthenticated, IsAdmin|IsSupervisor|IsSurveyor]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     search_fields = ['name', 'phone_number']
@@ -33,6 +34,11 @@ class UserViewSet(viewsets.ModelViewSet):
                     queryset = queryset.filter(id__in=surveyors_in_assigned_blocks)
 
         return queryset
+
+    @action(detail=False, methods=['GET'], name='Get User Profile')
+    def profile(self, request, *args, **kwargs):
+        return Response(UserSerializer(self.request.user).data)
+
 
     @action(detail=True, methods=['put'], name='Change Password')
     def password(self, request, pk=None):

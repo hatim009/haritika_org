@@ -1,9 +1,11 @@
 from django.db import models
+from django.http import QueryDict
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
+
 
 
 class UserManager(BaseUserManager):
@@ -66,6 +68,8 @@ class AnonymousUser:
     username = ""
     is_active = False
     user_type = None
+    assigned_blocks = User.objects.none()
+    assigned_projects = User.objects.none()
 
     def __str__(self):
         return "AnonymousUser"

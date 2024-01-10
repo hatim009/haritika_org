@@ -3,6 +3,7 @@ from django.db.models import Q
 
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
 
 from .permissions import hasBlockPermission
 from .models import LandParcel
@@ -13,7 +14,7 @@ from local_directories.models import VillagesDirectory
 
 
 class LandParcelViewSet(viewsets.ModelViewSet):
-    permssion_classes = [hasBlockPermission]
+    permssion_classes = [IsAuthenticated, hasBlockPermission]
     serializer_class = LandParcelSerializer
     queryset = LandParcel.objects.all()
     filter_backends = [SearchFilter]

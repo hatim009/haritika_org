@@ -9,13 +9,14 @@ from farmers.models import Farmer
 from users.models import User
 from local_directories.models import VillagesDirectory
 from .permissions import hasParentsBlockPermission
+from rest_framework.permissions import IsAuthenticated
 
 
 class BeneficiaryViewset(viewsets.ModelViewSet):
     serializer_class = BeneficiarySerializer
     queryset = Beneficiary.objects.all()
     filter_backends = [SearchFilter]
-    permission_classes = [hasParentsBlockPermission]
+    permission_classes = [IsAuthenticated, hasParentsBlockPermission]
     search_fields = ['beneficiary_id', 'id_hash', 'name', 'phone_number', 'guardian__farmer_id', 'guardian__id_hash', 'guardian__name', 'guardian__phone_number']
 
     def get_queryset(self):

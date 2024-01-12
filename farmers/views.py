@@ -6,10 +6,8 @@ from .models import Farmer
 from .filters import FarmerFilter
 from local_directories.models import VillagesDirectory
 from users.models import User
-from .permissions import IsSupervisor, IsSurveyor
-from utils.permissions import IsAdmin
+from utils.permissions import IsAdmin, IsSupervisor, IsSurveyor
 
-from rest_framework.filters import SearchFilter
 
 class FarmerViewSet(viewsets.ModelViewSet):
     serializer_class = FarmerSerializer

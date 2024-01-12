@@ -7,7 +7,9 @@ from .models import Beneficiary
 from farmers.models import Farmer
 
 from users.serializers import UserSerializer
+from farmers.serializers import FarmerSerializer
 from files_manager.serializers import FileSerializer
+from local_directories.serializers import VillagesDirectorySerializer
 
 
 class BeneficiarySerializer(serializers.ModelSerializer):
@@ -16,6 +18,7 @@ class BeneficiarySerializer(serializers.ModelSerializer):
     id_front_image = FileSerializer()
     id_back_image = FileSerializer()
     added_by = UserSerializer(read_only=True)
+    village = VillagesDirectorySerializer(depth=4)
     id_hash = serializers.CharField(min_length=128, max_length=128, validators=[UniqueValidator(queryset=Farmer.objects.all()), UniqueValidator(queryset=Beneficiary.objects.all())])
 
     class Meta:

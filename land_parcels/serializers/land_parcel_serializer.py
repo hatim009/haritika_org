@@ -11,7 +11,7 @@ from users.serializers import UserSerializer
 class LandParcelSerializer(serializers.ModelSerializer):
 
     pictures = LandParcelPictureSerializer(many=True, source='land_parcel_pictures')
-    village = VillagesDirectorySerializer()
+    village = VillagesDirectorySerializer(depth=4)
     added_by = UserSerializer(read_only=True)
     last_edited_by = UserSerializer(read_only=True)
 

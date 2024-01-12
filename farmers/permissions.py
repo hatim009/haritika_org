@@ -1,39 +1,34 @@
 from rest_framework.permissions import BasePermission
+
 from users.models import User
+from utils.permissions import HasBlockPermission
 
 
-class IsAdmin(BasePermission):
+class IsSupervisor(BasePermission):
     """
-    Allows access only to admin users.
+    Allows access only to supervisors.
     """
-
     def has_permission(self, request, view):
-        return bool(request.user.user_type == User.UserType.ADMIN)
-
-
-class hasBlockPermission(BasePermission):
+        return request.user.user_type == User.UserType.SUPERVISOR
+    
     def has_object_permission(self, request, view, obj):
-        if IsAdmin().has_permission(request, view):
-            return True
-
-        curr_block = None
-        if hasattr(obj, 'village'):
-            curr_block = obj.village.block.code
-        elif hasattr(obj, 'block'):
-            curr_block = obj.block.code    
-        
-        if not curr_block:
+        if not self.has_permission(request, view):
             return False
-
-        assigned_blocks = [user_block.block.code for user_block in request.user.assigned_blocks.all()]
-
-        if curr_block and curr_block in assigned_blocks:
-            return True
         
-        return False
+        return HasBlockPermission().has_object_permission(request, view, obj)
+    
 
-
-class hasParentsBlockPermission(BasePermission):
+class IsSurveyor(BasePermission):
+    """
+    Allows access only to surveyors.
+    """
+    def has_permission(self, request, view):
+        return request.user.user_type == User.UserType.SURVEYOR
+    
     def has_object_permission(self, request, view, obj):
-        parent_obj = getattr(obj, view.get_serializer.Meta.parent_attribute)
-        return hasBlockPermission().has_object_permission(request, view, parent_obj)
+        if not self.has_permission(request, view):
+            return False
+        
+        return HasBlockPermission().has_object_permission(request, view, obj)
+
+

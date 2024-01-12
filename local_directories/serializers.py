@@ -19,6 +19,12 @@ class DistrictsDirectorySerializer(serializers.ModelSerializer):
 
 
 class BlocksDirectorySerializer(serializers.ModelSerializer):
+    def __init__(self, instance=None, *args, **kwargs):
+        if 'depth' in kwargs:
+            self.Meta.depth = kwargs.pop('depth')
+            self.Meta.exclude = []
+
+        super().__init__(instance, *args, **kwargs)
     
     class Meta:
         model = BlocksDirectory
@@ -27,6 +33,12 @@ class BlocksDirectorySerializer(serializers.ModelSerializer):
 
 class VillagesDirectorySerializer(serializers.ModelSerializer):
     
+    def __init__(self, instance=None, *args, **kwargs):
+        if 'depth' in kwargs:
+            self.Meta.depth = kwargs.pop('depth')
+            self.Meta.exclude = []
+        super().__init__(instance, *args, **kwargs)
+
     class Meta:
         model = VillagesDirectory
         exclude = ['block']

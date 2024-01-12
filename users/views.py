@@ -1,11 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.request import Request
 from rest_framework.response import Response 
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
-from .permissions import IsAdmin, IsSupervisor, IsSurveyor
+from .permissions import IsSupervisor, IsSurveyor
+from utils.permissions import IsAdmin
 from .filters import UserFilter
 from .models import User, UserBlock
 from .serializers import UserSerializer, PasswordSerializer
@@ -38,7 +38,6 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'], name='Get User Profile')
     def profile(self, request, *args, **kwargs):
         return Response(UserSerializer(self.request.user).data)
-
 
     @action(detail=True, methods=['put'], name='Change Password')
     def password(self, request, pk=None):

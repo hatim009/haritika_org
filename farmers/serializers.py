@@ -11,7 +11,7 @@ class FarmerSerializer(serializers.ModelSerializer):
     profile_photo = FileSerializer()
     id_front_image = FileSerializer()
     id_back_image = FileSerializer()
-    village = VillagesDirectorySerializer()
+    village = VillagesDirectorySerializer(depth=4)
     added_by = UserSerializer(read_only=True)
     last_edited_by = UserSerializer(read_only=True)
     land_parcels = LandParcelSerializer(many=True, read_only=True, source='owned_land_parcels')
@@ -19,7 +19,6 @@ class FarmerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Farmer
         fields = '__all__'
-        depth = 4
         read_only_fields = ['added_by', 'added_on', 'last_edited_by', 'last_edited_on']
 
     def create(self, validated_data):

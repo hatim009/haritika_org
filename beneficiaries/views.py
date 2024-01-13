@@ -1,14 +1,15 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import BeneficiarySerializer
-from .models import Beneficiary
-from .filters import BeneficiaryFilter
+from beneficiaries.serializers import BeneficiarySerializer
+from beneficiaries.models import Beneficiary
+from beneficiaries.filters import BeneficiaryFilter
 
 from farmers.models import Farmer
 from users.models import User
 from local_directories.models import VillagesDirectory
-from utils.permissions import IsAdmin, IsSupervisor, IsSurveyor
+from beneficiaries.permissions import IsSupervisor, IsSurveyor
+from permissions import IsAdmin
 
 
 class BeneficiaryViewset(viewsets.ModelViewSet):

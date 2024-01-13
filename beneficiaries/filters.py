@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 
-from .models import Beneficiary
-from utils.filters import MultiValueFilter
+from beneficiaries.models import Beneficiary
+from filters import MultiValueFilter
 
 
 class BeneficiaryFilter(filters.FilterSet):

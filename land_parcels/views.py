@@ -5,10 +5,10 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 
-from utils.permissions import IsAdmin, IsSupervisor, IsSurveyor
-from .models import LandParcel
-from .serializers import LandParcelSerializer
-from .filters import LandParcelFilter
+from permissions import IsAdmin, IsSupervisor, IsSurveyor
+from land_parcels.models import LandParcel
+from land_parcels.serializers import LandParcelSerializer
+from land_parcels.filters import LandParcelFilter
 from farmers.models import Farmer
 from users.models import User
 from local_directories.models import VillagesDirectory

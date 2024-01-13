@@ -1,12 +1,12 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import FarmerSerializer
-from .models import Farmer
-from .filters import FarmerFilter
+from farmers.serializers import FarmerSerializer
+from farmers.models import Farmer
+from farmers.filters import FarmerFilter
 from local_directories.models import VillagesDirectory
 from users.models import User
-from utils.permissions import IsAdmin, IsSupervisor, IsSurveyor
+from permissions import IsAdmin, IsSupervisor, IsSurveyor
 
 
 class FarmerViewSet(viewsets.ModelViewSet):

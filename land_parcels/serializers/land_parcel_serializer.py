@@ -1,7 +1,5 @@
 from django.db import transaction
 from rest_framework import serializers
-from rest_framework.request import Request
-from rest_framework.fields import empty
 from land_parcels.models import LandParcel
 from .land_parcel_picture_serializer import LandParcelPictureSerializer
 from local_directories.serializers import VillagesDirectorySerializer

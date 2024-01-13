@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 
-from .models import Farmer
-from utils.filters import MultiValueFilter
+from farmers.models import Farmer
+from filters import MultiValueFilter
 
 
 class FarmerFilter(filters.FilterSet):

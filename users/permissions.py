@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
-from .models import User
-from utils.permissions import HasBlockPermission
+from users.models import User
+from permissions import HasBlockPermission
 
 
 class IsSupervisor(BasePermission):

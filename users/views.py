@@ -4,11 +4,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
-from .permissions import IsSupervisor, IsSurveyor
-from utils.permissions import IsAdmin
-from .filters import UserFilter
-from .models import User, UserBlock
-from .serializers import UserSerializer, PasswordSerializer
+from users.permissions import IsSupervisor, IsSurveyor
+from users.filters import UserFilter
+from users.models import User, UserBlock
+from users.serializers import UserSerializer, PasswordSerializer
+
+from permissions import  IsAdmin
 
 
 class UserViewSet(viewsets.ModelViewSet):

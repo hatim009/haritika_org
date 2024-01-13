@@ -1,7 +1,7 @@
 from django_filters import rest_framework as filters
 
-from .models import LandParcel
-from utils.filters import MultiValueFilter
+from land_parcels.models import LandParcel
+from filters import MultiValueFilter
 
 
 class LandParcelFilter(filters.FilterSet):

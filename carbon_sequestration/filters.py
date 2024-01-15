@@ -1,10 +1,10 @@
 from django_filters import rest_framework as filters
 
 from .models import CarbonSequestration
-from utils.filters import MultiValueFilter
+from filters import MultiValueFilter
 
 
-class FarmerFilter(filters.FilterSet):
+class CarbonSequestrationFilter(filters.FilterSet):
     villages = MultiValueFilter(field_name='village', lookup_expr='in')
     blocks = MultiValueFilter(field_name='village', lookup_expr='block__in')
     districts = MultiValueFilter(field_name='village', lookup_expr='block__district__in')

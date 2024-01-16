@@ -115,7 +115,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'projectngo.urls'
+ROOT_URLCONF = 'haritika_org.urls'
 
 TEMPLATES = [
     {
@@ -124,7 +124,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'projectngo.wsgi.application'
+WSGI_APPLICATION = 'haritika_org.wsgi.application'
 
 
 # Database
@@ -133,9 +133,9 @@ WSGI_APPLICATION = 'projectngo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "NAME": "project-ngo",
-        "USER": "project-ngo-admin",
-        "PASSWORD": "Project-NGO@Admin",
+        "NAME": "haritika_org",
+        "USER": "haritika_org_admin",
+        "PASSWORD": "Haritika-Org@Admin",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

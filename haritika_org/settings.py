@@ -134,11 +134,11 @@ WSGI_APPLICATION = 'haritika_org.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        "NAME": "haritika_org",
-        "USER": "haritikaorgadmin",
-        "PASSWORD": "AgRt&125$JdTh^895",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        'NAME': 'haritika-org-db',
+        'USER': 'haritikaorgadmin',
+        'PASSWORD': 'AgRt&125$JdTh^895',
+        'HOST': 'haritika-org-db.cpkq2cy6abf7.ap-south-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 

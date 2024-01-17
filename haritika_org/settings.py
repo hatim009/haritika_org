@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 
 from pathlib import Path
 from datetime import timedelta
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-xpbs42h2=l)6uudhk))78b(4u5bf3*ela8b*_!1e)ndixhgq)0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['haritika-org.ap-south-1.elasticbeanstalk.com']
 
 
 # Application definition
@@ -63,41 +64,41 @@ REST_FRAMEWORK = {
 }
 
 RSA_PRIVATE_KEY = """-----BEGIN RSA PRIVATE KEY-----
-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
+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
 -----END RSA PRIVATE KEY-----"""
 
-RSA_PUBLIC_KEY = """-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwQi+6QT1XsRxMD0j5wY6
-+MDW7JaBVsls1qgyDSfM4wPPpM1YzqwNRHNMkufTjdW+9g86WSukeZntUX3ORm4D
-FXV1yOyPS4EY60lyhoX7qjXfUAk6iAsRpEfS0WpEanQBB5fQjNLVFI+WXP0o1jwe
-cV0uc8LJJM/dWaWWZ6b0yfmYIjPRCHhDENp2CznjB4hDbIkTyt855/QivG67AWc5
-O/mBGN9i1fCmVLUUoVFu2/1WRbGqUwGg8fsxrZj80+hmD+ib5cu8P4wkuXNEITLA
-Yo7xTRvgiCN5GzrsGhMGk5FHCtpHVgbSp9RRddLRKWBYjMGFkTUYnEpEMKpnIWlM
-NQIDAQAB
+RSA_PUBLIC_KEY = """----------BEGIN PUBLIC KEY-----
+MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBCqoDMZ9wFGbhu08A//LWV
+VyUrOQ1Fol697L60bOeRCQ9ieiyVI8kDjsIJ8TjqcUuwRMvUGtm3aUEmG8FMTjao
+ysN9jzSmYQ+zWQBUcJYDIIC9ETVPDSwrldCI8tXaSZsgTgSvoRO+b+F/ccBtl10h
+09715UX3dF79W53FXjIhwiKeFRSm+n7dNlgyXrpIl4Z5/G2ESzs8vsOnIUTRPaji
+Hu4XkTu/OxHdnYcoZErAYId9NtwlbzagpWWMupvjoPYfvYIl5cQHgwqcW4equ8VK
+FJkPf81r4+fcthWigr1VbT+YVqCUw9g6nFWcMwHFPXVMpt4/LFLm6oL6wvuSNiD9
+AgMBAAE=
 -----END PUBLIC KEY-----"""
 
 SIMPLE_JWT = {
@@ -134,8 +135,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         "NAME": "haritika_org",
-        "USER": "haritika_org_admin",
-        "PASSWORD": "Haritika-Org@Admin",
+        "USER": "haritikaorgadmin",
+        "PASSWORD": "AgRt&125$JdTh^895",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
@@ -178,6 +179,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

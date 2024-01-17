@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'projectngo.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'haritika_org.settings')
 
 application = get_wsgi_application()

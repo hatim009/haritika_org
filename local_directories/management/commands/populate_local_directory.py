@@ -25,6 +25,10 @@ class Command(BaseCommand):
 
                             state_directory, state_created = StatesDirectory.objects.get_or_create(code=row['State Code'], name=row['State Name'])
                             print('{0}: {1}\n'.format(state_directory.name, state_created))
+
+                            if not state_created:
+                                print('State {0} already populated, skipping...\n'.format(state_directory.name))
+                                break
                             
                             district_directory, district_created = DistrictsDirectory.objects.get_or_create(code=row['District Code'], name=row['District Name'], state=state_directory)
                             print('{0}: {1}\n'.format(district_directory.name, district_created))

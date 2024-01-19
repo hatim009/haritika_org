@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xpbs42h2=l)6uudhk))78b(4u5bf3*ela8b*_!1e)ndixhgq)0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('HARITIKA_ORG_BACKEND_DEBUG', False)
 
 ALLOWED_HOSTS = ['haritika-org.ap-south-1.elasticbeanstalk.com']
 

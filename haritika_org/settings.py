@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+import base64
 
 from pathlib import Path
 from datetime import timedelta
@@ -24,9 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xpbs42h2=l)6uudhk))78b(4u5bf3*ela8b*_!1e)ndixhgq)0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('HARITIKA_ORG_BACKEND_DEBUG', False)
+DEBUG = os.environ.get('HARITIKA_ORG_BACKEND_DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['haritika-org.ap-south-1.elasticbeanstalk.com']
+ENV = os.environ.get('HARITIKA_ORG_BACKEND_ENV', 'Local')
+
+if 'AwsElasticbean' == ENV:
+    ALLOWED_HOSTS = ['haritika-org.ap-south-1.elasticbeanstalk.com']
 
 
 # Application definition
@@ -62,9 +66,9 @@ REST_FRAMEWORK = {
     ),
 }
 
-RSA_PRIVATE_KEY = os.environ['RSA_PRIVATE_KEY']
+RSA_PRIVATE_KEY = base64.b64decode(os.environ['RSA_PRIVATE_KEY']).decode('utf-8')
 
-RSA_PUBLIC_KEY = os.environ['RSA_PUBLIC_KEY']
+RSA_PUBLIC_KEY = base64.b64decode(os.environ['RSA_PUBLIC_KEY']).decode('utf-8')
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
@@ -101,7 +105,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ['RDS_DB_NAME'],
         'USER': os.environ['RDS_USERNAME'],
-        'PASSWORD': os.environ['RDS_PASSWORD'],
+        'PASSWORD': base64.b64decode(os.environ['RDS_PASSWORD']).decode('utf-8'),
         'HOST': os.environ['RDS_HOSTNAME'],
         'PORT': os.environ['RDS_PORT'],
     }

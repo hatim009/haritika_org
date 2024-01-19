@@ -9,12 +9,14 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('-ph', '--phone_number', type=str, required=True)
         parser.add_argument('-p', '--password', type=str, required=True)
+        parser.add_argument('-em', '--email', type=str, required=True)
 
     def handle(self, *args, **options):
         try:
             phone_number = options['phone_number']
             password = options['password']
-            UserManager().create_user(phone_number=phone_number, password=password)
+            email = options['email']
+            UserManager().create_user(phone_number=phone_number, password=password, email=email)
         except RuntimeError:
             raise CommandError('Error creating admin').with_traceback(sys.exception().__traceback__)
 

@@ -11,14 +11,14 @@ from django.contrib.auth.hashers import make_password
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, phone_number, password):
+    def create_user(self, phone_number, password, email):
         """
         Create and save a user with the given username, email, and password.
         """
         if not phone_number:
             raise ValueError("The given phone_number must be set")
         phone_number = User.normalize_username(phone_number)
-        user = User(phone_number=phone_number, user_type=User.UserType.ADMIN)
+        user = User(phone_number=phone_number, user_type=User.UserType.ADMIN, email=email)
         user.password = make_password(password)
         user.save(using=self._db)
         return user

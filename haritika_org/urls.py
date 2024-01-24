@@ -22,6 +22,7 @@ from farmers.urls import router as farmers_router
 from land_parcels.urls import router as land_parcels_router
 from beneficiaries.urls import router as beneficiaries_router
 from carbon_sequestration.urls import router as carbon_sequestration_router
+from aws_utility.urls import urlpatterns as aws_utility_urlpatterns
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 
@@ -36,4 +37,5 @@ urlpatterns = [
     path('', include(beneficiaries_router.urls)),
     path('', include(projects_urlpatterns)),
     path('', include(carbon_sequestration_router.urls)),
+    path('', include(aws_utility_urlpatterns)),
 ]

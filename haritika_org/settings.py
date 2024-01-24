@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import base64
 
+import boto3
+from botocore.config import Config
+
 from pathlib import Path
 from datetime import timedelta
 
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'local_directories',
     'files_manager',
     'carbon_sequestration',
+    'aws_utility',
 ]
 
 REST_FRAMEWORK = {
@@ -154,3 +158,9 @@ STATIC_ROOT = 'static'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+HARITIKA_ORG_S3_BUCKET = 'haritika-org'
+
+BOTOCORE_CONFIG = Config(region_name='ap-south-1', signature_version='s3v4')
+
+BOTO_S3_CLIENT = boto3.client('s3', config=BOTOCORE_CONFIG)

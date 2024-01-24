@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = base64.b64decode(os.environ.get('HARITIKA_ORG_BACKEND_SECRET_KEY'))
+SECRET_KEY = base64.b64decode(os.environ.get('HARITIKA_ORG_BACKEND_SECRET_KEY')).decode('utf-8')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('HARITIKA_ORG_BACKEND_DEBUG', 'False').lower() == 'true'

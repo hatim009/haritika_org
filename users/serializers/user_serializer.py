@@ -7,8 +7,8 @@ from django.db import transaction
 
 
 class UserSerializer(serializers.ModelSerializer):
-    blocks = UserBlockSerializer(many=True, source='assigned_blocks')
-    projects = UserProjectBlockSerializer(many=True, source='assigned_projects')
+    blocks = UserBlockSerializer(many=True, source='assigned_blocks', required=False)
+    projects = UserProjectBlockSerializer(many=True, source='assigned_projects', required=False)
     
     class Meta:
         model = User
@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         return dictionary.get(self.field_name, empty)
 
     def validate(self, attrs):
-        assigned_blocks = attrs['assigned_blocks'].values()
+        assigned_blocks = attrs.get('assigned_blocks', {}).values()
         assigned_projects = [(project_assignment_info['project'], attrs['assigned_blocks'][block]) for id, project_assignment_info in attrs.get('assigned_projects', {}).items() for block in project_assignment_info['blocks']]
         
         attrs['assigned_blocks'] = assigned_blocks

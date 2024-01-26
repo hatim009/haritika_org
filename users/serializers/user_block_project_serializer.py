@@ -18,7 +18,10 @@ class UserProjectBlockListSerializer(serializers.ListSerializer):
         return dictionary.get(self.field_name, empty)
 
     def validate(self, assigned_projects):
-        if not assigned_projects and self.context['request'].user.user_type != User.UserType.ADMIN:
+        if self.context['request'].user.user_type == User.UserType.ADMIN:
+            return {}
+
+        if not assigned_projects:
             raise ValidationError(['At least 1 project must be assigned to the user.'])
 
         valid_projects_list = Project.objects.filter(is_active=True).filter(id__in=assigned_projects.keys())

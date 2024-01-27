@@ -12,8 +12,19 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        exclude = ['password', 'last_updated', 'last_login']
+        exclude = ['last_updated', 'last_login']
         read_only_fields = ['is_active', 'date_joined']
+
+    def get_fields(self, *args, **kwargs):
+        fields = super(UserSerializer, self).get_fields(*args, **kwargs)
+        request = self.context.get('request')
+
+        if request and getattr(request, 'method', None) != 'POST':
+            fields.pop('password')
+        elif request:
+            fields['password'].write_only = True
+
+        return fields
 
     """
     There is a bug in rest_framework.serializers.ListSerializer.get_field() where 
@@ -49,7 +60,9 @@ class UserSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             assigned_blocks = validated_data.pop('assigned_blocks')
             assigned_projects = validated_data.pop('assigned_projects')
+            password = validated_data.pop('password')
             user = User(**validated_data)
+            user.set_password(password)
             user.save()
             
             self.fields['blocks'].create(user, assigned_blocks)

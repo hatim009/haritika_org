@@ -1,2 +1,2 @@
 from .carbon_sequestration_serializer import CarbonSequestrationSerializer
-from .carbon_sequestration_model_serializer import CarbonSequestrationModelSerializer
+from .carbon_sequestration_progress_serializer import CarbonSequestrationProgressSerializer

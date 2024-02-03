@@ -34,7 +34,8 @@ ENV = os.environ.get('HARITIKA_ORG_BACKEND_ENV', 'Local')
 
 if 'AwsElasticbean' == ENV:
     ALLOWED_HOSTS = ['haritika-org.ap-south-1.elasticbeanstalk.com']
-
+elif 'Local' == ENV:
+    ALLOWED_HOSTS = ['*']
 
 # Application definition
 

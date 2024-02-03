@@ -35,6 +35,7 @@ class User(AbstractBaseUser):
         SUPERVISOR = 'SUPERVISOR', _('Supervisor')
         SURVEYOR = 'SURVEYOR', _('Surveyor')
  
+    profile_photo = models.OneToOneField("files_manager.File", on_delete=models.DO_NOTHING, null=True)
     user_type = models.CharField(_("user type"), max_length=20, choices=UserType.choices)
     name = models.CharField(_("name"), max_length=200)
     gender = models.CharField(_("gender"), max_length=20, choices=Gender.choices)

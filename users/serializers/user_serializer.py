@@ -3,13 +3,15 @@ from rest_framework import serializers
 from rest_framework.fields import empty
 from users.models import User
 from users.serializers import UserBlockSerializer, UserProjectBlockSerializer
+from files_manager.serializers import FileSerializer
 from django.db import transaction
 
 
 class UserSerializer(serializers.ModelSerializer):
     blocks = UserBlockSerializer(many=True, source='assigned_blocks', required=False)
     projects = UserProjectBlockSerializer(many=True, source='assigned_projects', required=False)
-    
+    profile_photo = FileSerializer(required=False)
+
     class Meta:
         model = User
         exclude = ['last_updated', 'last_login']
@@ -19,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = super(UserSerializer, self).get_fields(*args, **kwargs)
         request = self.context.get('request')
 
-        if request and getattr(request, 'method', None) != 'POST':
+        if not request or  getattr(request, 'method', None) != 'POST':
             fields.pop('password')
         elif request:
             fields['password'].write_only = True
@@ -49,6 +51,13 @@ class UserSerializer(serializers.ModelSerializer):
             instance.email = validated_data.get('email', instance.email)
             instance.gender = validated_data.get('gender', instance.gender)
             instance.user_type = validated_data.get('user_type', instance.user_type)
+
+            if 'profile_photo' in validated_data:
+                if instance.profile_photo :
+                    instance.profile_photo = self.fields['profile_photo'].update(instance.profile_photo, validated_data['profile_photo'])
+                else:
+                    instance.profile_photo = self.fields['profile_photo'].create(validated_data['profile_photo'])
+
             instance.save()
 
             self.fields['blocks'].update(instance, validated_data['assigned_blocks'])
@@ -61,13 +70,17 @@ class UserSerializer(serializers.ModelSerializer):
             assigned_blocks = validated_data.pop('assigned_blocks')
             assigned_projects = validated_data.pop('assigned_projects')
             password = validated_data.pop('password')
+
+            if 'profile_photo' in validated_data:
+                validated_data['profile_photo'] = self.fields['profile_photo'].create(validated_data['profile_photo'])
+
             user = User(**validated_data)
             user.set_password(password)
             user.save()
             
             self.fields['blocks'].create(user, assigned_blocks)
             self.fields['projects'].create(user, assigned_projects)
-
+            
             return user
 
 

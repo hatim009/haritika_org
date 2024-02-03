@@ -38,7 +38,19 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'], name='Get User Profile')
     def profile(self, request, *args, **kwargs):
-        return Response(UserSerializer(self.request.user).data)
+        has_object_permission = False
+        match request.user.user_type:
+            case User.UserType.ADMIN:
+                has_object_permission = IsAdmin().has_object_permission(request, self, request.user)
+            case User.UserType.SUPERVISOR:
+                has_object_permission = IsSupervisor().has_object_permission(request, self, request.user)
+            case User.UserType.SURVEYOR:
+                has_object_permission = IsSurveyor().has_object_permission(request, self, request.user)
+
+        if has_object_permission:
+            return Response(UserSerializer(self.request.user).data)
+        
+        return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
 
     @action(detail=True, methods=['put'], name='Change Password')
     def password(self, request, pk=None):

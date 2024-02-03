@@ -9,7 +9,7 @@ class IsSupervisor(BasePermission):
     Allows access only to supervisors.
     """
     def has_permission(self, request, view):
-        return request.user.user_type == User.UserType.SURVEYOR
+        return request.user.user_type == User.UserType.SUPERVISOR
  
     def has_object_permission(self, request, view, obj):
         if not self.has_permission(request, view) or obj.user_type == User.UserType.ADMIN:
@@ -17,6 +17,9 @@ class IsSupervisor(BasePermission):
 
         is_self = IsSelf().has_object_permission(request, view, obj)
         has_block_permission = HasBlockPermission().has_object_permission(request, view, obj)
+
+        print(view.action)
+        print(is_self)
 
         match view.action:
             case 'partial_update':

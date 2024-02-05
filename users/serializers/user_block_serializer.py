@@ -17,7 +17,7 @@ class UserBlockListSerializer(serializers.ListSerializer):
         return dictionary.get(self.field_name, empty)
 
     def validate(self, block_codes):
-        if self.context['request'].user.user_type == User.UserType.ADMIN:
+        if self.context['request'].data['user_type'] == User.UserType.ADMIN:
             return {}
 
         if not block_codes:

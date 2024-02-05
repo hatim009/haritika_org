@@ -3,7 +3,7 @@ import json
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from rest_framework.fields import empty
-from users.models import User, UserBlock
+from users.models import User, UserBlock, AnonymousUser
 from local_directories.models import BlocksDirectory
 
 
@@ -17,7 +17,13 @@ class UserBlockListSerializer(serializers.ListSerializer):
         return dictionary.get(self.field_name, empty)
 
     def validate(self, block_codes):
-        if self.context['request'].data['user_type'] == User.UserType.ADMIN:
+        user_type = None
+        if self.context['view'].action in ['PUT', 'PATCH']:
+            user_type = self.context['view'].get_object().user_type
+        elif self.context['view'].action in ['POST']:
+            user_type = self.context['request'].data['user_type']
+        
+        if user_type == User.UserType.ADMIN:
             return {}
 
         if not block_codes:

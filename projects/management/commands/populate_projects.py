@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 for row in csv_reader:
                     assert(len(row) == 1)
 
-                    project, project_created = Project.objects.get_or_create(name=row['name'], is_active=False)
+                    project, project_created = Project.objects.get_or_create(name=row['name'])
                     print('{0}: {1}\n'.format(project.name, project_created))
                             
         except RuntimeError:

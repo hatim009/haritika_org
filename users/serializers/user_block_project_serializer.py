@@ -68,6 +68,8 @@ class UserProjectBlockListSerializer(serializers.ListSerializer):
         return project_blocks_map
     
     def update(self, user, project_block_list):
+        if not project_block_list:
+            return user.assigned_projects.all()
         project_block_map = {"-".join([str(project.id), str(block.code)]): (project, block) for project, block in project_block_list}
         curr_project_blocks = user.assigned_projects.all()
         curr_project_block_ids = ["-".join([str(project_block.project.id), str(project_block.block.code)]) for project_block in curr_project_blocks]

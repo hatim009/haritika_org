@@ -45,6 +45,9 @@ class UserBlockListSerializer(serializers.ListSerializer):
         return {block_code: block for block_info in super().to_representation(data) for block_code, block in block_info.items()}
     
     def update(self, user, assigned_blocks):
+        if not assigned_blocks:
+            return user.assigned_blocks.all()
+
         assigned_block_codes = [block.code for block in assigned_blocks]
         curr_user_blocks = user.assigned_blocks.all()
         curr_assigned_blocks = [user_block.block.code for user_block in curr_user_blocks]

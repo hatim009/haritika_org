@@ -37,11 +37,39 @@ class UserSerializer(serializers.ModelSerializer):
         return dictionary.get(self.field_name, empty)
 
     def validate(self, attrs):
-        assigned_blocks = attrs.get('assigned_blocks', {}).values()
-        assigned_projects = [(project_assignment_info['project'], attrs['assigned_blocks'][block]) for id, project_assignment_info in attrs.get('assigned_projects', {}).items() for block in project_assignment_info['blocks']]
+        user_type = None
+        if self.context['request'].method in ['PUT', 'PATCH']:
+            user_type = self.context['view'].get_object().user_type
+        elif self.context['request'].method in ['POST']:
+            user_type = self.context['request'].data['user_type']
+        else:
+            raise ValidationError(['Invalid action %s' % (self.context['request'].method)])
         
-        attrs['assigned_blocks'] = assigned_blocks
-        attrs['assigned_projects'] = assigned_projects
+        if user_type == User.UserType.ADMIN:
+            return attrs
+
+        assigned_blocks = None
+        if self.context['request'].method in ['POST']:
+            assert 'assigned_blocks' in attrs
+            assigned_blocks = attrs['assigned_blocks']
+        elif self.context['request'].method in ['PUT', 'PATCH']:
+            if 'assigned_blocks' in attrs:
+                assigned_blocks = attrs['assigned_blocks']
+            else:
+                assigned_blocks = {user_block.block.code: user_block.block for user_block in self.context['view'].get_object().assigned_blocks.all()}
+        else:
+            raise ValidationError(['Invalid action %s' % (self.context['request'].method)])
+
+        if 'assigned_projects' in attrs:
+            assigned_projects = []
+            for id, project_assignment_info in attrs['assigned_projects'].items():
+                for block in project_assignment_info['blocks']:
+                    assigned_projects.append((project_assignment_info['project'], assigned_blocks[block]))
+
+            attrs['assigned_projects'] = assigned_projects
+
+        if 'assigned_blocks' in attrs:
+            attrs['assigned_blocks'] = attrs['assigned_blocks'].values()
 
         return attrs
 
@@ -60,8 +88,11 @@ class UserSerializer(serializers.ModelSerializer):
 
             instance.save()
 
-            self.fields['blocks'].update(instance, validated_data['assigned_blocks'])
-            self.fields['projects'].update(instance, validated_data['assigned_projects'])
+            if 'assigned_blocks' in validated_data:
+                self.fields['blocks'].update(instance, validated_data['assigned_blocks'])
+            
+            if 'assigned_projects' in validated_data:
+                self.fields['projects'].update(instance, validated_data['assigned_projects'])
             
             return instance
     
@@ -78,8 +109,11 @@ class UserSerializer(serializers.ModelSerializer):
             user.set_password(password)
             user.save()
             
-            self.fields['blocks'].create(user, assigned_blocks)
-            self.fields['projects'].create(user, assigned_projects)
+            if assigned_blocks:
+                self.fields['blocks'].create(user, assigned_blocks)
+            
+            if assigned_projects:
+                self.fields['projects'].create(user, assigned_projects)
             
             return user
 

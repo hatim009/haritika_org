@@ -18,16 +18,19 @@ class UserBlockListSerializer(serializers.ListSerializer):
 
     def validate(self, block_codes):
         user_type = None
-        if self.context['view'].action in ['PUT', 'PATCH']:
+        if self.context['request'].method in ['PUT', 'PATCH']:
             user_type = self.context['view'].get_object().user_type
-        elif self.context['view'].action in ['POST']:
-            user_type = self.context['request'].data['user_type']
+        elif self.context['request'].method in ['POST']:
+            if 'user_type' in self.context['request'].data:
+                user_type = self.context['request'].data['user_type']
+            else:
+                raise ValidationError({'user_type': ['This field is required.']})
         
         if user_type == User.UserType.ADMIN:
             return {}
 
         if not block_codes:
-            raise ValidationError(['At least 1 block should be assigned to the user.'])
+            return {}
 
         valid_blocks_list = BlocksDirectory.objects.filter(code__in=block_codes)
         valid_blocks = {block.code: block for block in valid_blocks_list}
@@ -45,9 +48,6 @@ class UserBlockListSerializer(serializers.ListSerializer):
         return {block_code: block for block_info in super().to_representation(data) for block_code, block in block_info.items()}
     
     def update(self, user, assigned_blocks):
-        if not assigned_blocks:
-            return user.assigned_blocks.all()
-
         assigned_block_codes = [block.code for block in assigned_blocks]
         curr_user_blocks = user.assigned_blocks.all()
         curr_assigned_blocks = [user_block.block.code for user_block in curr_user_blocks]

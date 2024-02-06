@@ -19,17 +19,18 @@ class UserProjectBlockListSerializer(serializers.ListSerializer):
 
     def validate(self, assigned_projects):
         user_type = None
-        if self.context['view'].action in ['PUT', 'PATCH']:
+        if self.context['request'].method in ['PUT', 'PATCH']:
             user_type = self.context['view'].get_object().user_type
-        elif self.context['view'].action in ['POST']:
+        elif self.context['request'].method in ['POST']:
             user_type = self.context['request'].data['user_type']
+        else:
+            raise ValidationError(['Invalid action %s' % (self.context['view'].action)])
         
-        if user_type == User.UserType.ADMIN:
+        if user_type == User.UserType.ADMIN or (not assigned_projects):
             return {}
 
-
         if not assigned_projects:
-            raise ValidationError(['At least 1 project must be assigned to the user.'])
+            return {}
 
         valid_projects_list = Project.objects.filter(is_active=True).filter(id__in=assigned_projects.keys())
         valid_projects = {project.id: project for project in valid_projects_list}
@@ -38,7 +39,11 @@ class UserProjectBlockListSerializer(serializers.ListSerializer):
         if invalid_projects:
             raise ValidationError(['Invalid project(s) assigned. Invalid project(s): %s'% (invalid_projects)])
         
-        assigned_blocks = set(json.loads(self.context['request'].data['blocks']))
+        if 'blocks' in self.context['request'].data:
+            assigned_blocks = set(json.loads(self.context['request'].data['blocks']))
+        else:
+            assigned_blocks = set([user_block.block.code for user_block in self.context['view'].get_object().assigned_blocks.all()])
+            
         invalid_blocks = [block for blocks in assigned_projects.values() for block in blocks if block not in assigned_blocks]
 
         if invalid_blocks:
@@ -68,8 +73,6 @@ class UserProjectBlockListSerializer(serializers.ListSerializer):
         return project_blocks_map
     
     def update(self, user, project_block_list):
-        if not project_block_list:
-            return user.assigned_projects.all()
         project_block_map = {"-".join([str(project.id), str(block.code)]): (project, block) for project, block in project_block_list}
         curr_project_blocks = user.assigned_projects.all()
         curr_project_block_ids = ["-".join([str(project_block.project.id), str(project_block.block.code)]) for project_block in curr_project_blocks]

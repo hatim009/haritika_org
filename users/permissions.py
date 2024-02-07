@@ -30,8 +30,6 @@ class IsSupervisor(BasePermission):
                 return is_self
             case 'profile':
                 return is_self
-            case 'partial_update':
-                return is_self
 
         return False
     

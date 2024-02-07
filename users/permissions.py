@@ -18,9 +18,6 @@ class IsSupervisor(BasePermission):
         is_self = IsSelf().has_object_permission(request, view, obj)
         has_block_permission = HasBlockPermission().has_object_permission(request, view, obj)
 
-        print(view.action)
-        print(is_self)
-
         match view.action:
             case 'partial_update':
                 """Supervisor is only allowed to assign projects to users"""
@@ -30,6 +27,10 @@ class IsSupervisor(BasePermission):
             case 'retrieve':
                 return has_block_permission
             case 'password':
+                return is_self
+            case 'profile':
+                return is_self
+            case 'partial_update':
                 return is_self
 
         return False
@@ -43,7 +44,7 @@ class IsSurveyor(BasePermission):
         return request.user.user_type == User.UserType.SURVEYOR
  
     def has_object_permission(self, request, view, obj):
-        if request.user.user_type != User.UserType.SURVEYOR or obj.user_type != User.UserType.SURVEYOR:
+        if not self.has_permission(request, view):
             return False
 
         is_self = IsSelf().has_object_permission(request, view, obj)
@@ -53,7 +54,10 @@ class IsSurveyor(BasePermission):
                 return is_self
             case 'password':
                 return is_self
-            
+            case 'profile':
+                return is_self
+            case 'partial_update':
+                return is_self
         return False
 
 

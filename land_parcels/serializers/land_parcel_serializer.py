@@ -12,6 +12,7 @@ class LandParcelSerializer(serializers.ModelSerializer):
     village = VillagesDirectorySerializer(depth=4)
     added_by = UserSerializer(read_only=True)
     last_edited_by = UserSerializer(read_only=True)
+    farmer_name = serializers.ReadOnlyField(source='farmer.name')
 
     class Meta:
         model = LandParcel

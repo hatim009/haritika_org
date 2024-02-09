@@ -1,8 +1,6 @@
 from django.db import transaction
-from django.db.models import Q
 
 from rest_framework import viewsets
-from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 
 from permissions import IsAdmin, IsSupervisor, IsSurveyor

@@ -17,7 +17,7 @@ class LandParcelViewSet(viewsets.ModelViewSet):
     serializer_class = LandParcelSerializer
     queryset = LandParcel.objects.all()
     filterset_class = LandParcelFilter
-    search_fields = ['id', 'farmer__farmer_id', 'farmer__id_hash', 'farmer__name', 'farmer__phone_number']
+    search_fields = ['id', 'farmer__farmer_id', 'farmer__id_hash', 'farmer__name', 'farmer__phone_number', 'khasra_number']
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -13,7 +13,7 @@ class Command(BaseCommand):
         try:
             models = [model.strip() for model in options['models'].strip().split(',')]
             for model in models:
-                carbon_sequestration_model = CarbonSequestrationModel(model=model, is_active=False)
+                carbon_sequestration_model = CarbonSequestrationModel(name=model, is_active=False)
                 carbon_sequestration_model.save()
         except RuntimeError:
             raise CommandError('Error adding models').with_traceback(sys.exception().__traceback__)

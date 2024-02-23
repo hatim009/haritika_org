@@ -13,7 +13,7 @@ class Command(BaseCommand):
         try:
             models = [model.strip() for model in options['models'].strip().split(',')]
             for model in models:
-                carbon_sequestration_model = CarbonSequestrationModel.objects.get(model=model)
+                carbon_sequestration_model = CarbonSequestrationModel.objects.get(name=model)
                 carbon_sequestration_model.is_active = False
                 carbon_sequestration_model.save()
         except RuntimeError:

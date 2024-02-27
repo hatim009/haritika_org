@@ -11,7 +11,7 @@ class LandParcel(models.Model):
     farmer = models.ForeignKey('farmers.Farmer', related_name='owned_land_parcels', on_delete=models.CASCADE)
     geo_trace = models.TextField()
     area = models.FloatField()
-    khasra_number = models.CharField(max_length=100)
+    khasra_number = models.CharField(max_length=100, unique=True)
     farm_workers = models.IntegerField()
     village = models.ForeignKey('local_directories.VillagesDirectory', on_delete=models.DO_NOTHING)
     added_by = models.ForeignKey('users.User', editable=False, related_name='land_parcels_added_by', on_delete=models.DO_NOTHING)

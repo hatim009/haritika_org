@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from carbon_sequestration.serializers import CarbonSequestrationSerializer, CarbonSequestrationProgressSerializer
 from carbon_sequestration.models import CarbonSequestration
 from carbon_sequestration.filters import CarbonSequestrationFilter
-from permissions import IsAdmin, IsSupervisor, IsSurveyor
+from .permissions import IsAdmin, IsSupervisor, IsSurveyor
 
 class CarbonSequestrationViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsAdmin|IsSupervisor|IsSurveyor]

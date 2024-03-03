@@ -3,7 +3,7 @@ from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from permissions import IsAdmin, IsSupervisor, IsSurveyor
+from .permissions import IsAdmin, IsSupervisor, IsSurveyor
 from land_parcels.models import LandParcel
 from land_parcels.serializers import LandParcelSerializer
 from land_parcels.filters import LandParcelFilter

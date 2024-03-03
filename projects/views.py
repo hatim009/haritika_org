@@ -3,7 +3,7 @@ from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from .models import Project
 from .serializers import ProjectSerializer
-from permissions import IsAdmin, IsSupervisor, IsSurveyor
+from .permissions import IsAdmin, IsSupervisor, IsSurveyor
 from rest_framework.permissions import IsAuthenticated
 
 

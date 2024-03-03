@@ -8,8 +8,7 @@ from beneficiaries.filters import BeneficiaryFilter
 from farmers.models import Farmer
 from users.models import User
 from local_directories.models import VillagesDirectory
-from beneficiaries.permissions import IsSupervisor, IsSurveyor
-from permissions import IsAdmin
+from .permissions import IsAdmin, IsSupervisor, IsSurveyor
 
 
 class BeneficiaryViewset(viewsets.ModelViewSet):

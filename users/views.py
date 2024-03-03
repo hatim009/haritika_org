@@ -4,12 +4,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 
-from users.permissions import IsSupervisor, IsSurveyor
-from users.filters import UserFilter
-from users.models import User, UserBlock
-from users.serializers import UserSerializer, PasswordSerializer
-
-from permissions import  IsAdmin
+from .permissions import IsAdmin, IsSupervisor, IsSurveyor
+from .filters import UserFilter
+from .models import User, UserBlock
+from .serializers import UserSerializer, PasswordSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -24,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
         
         if self.action == 'list':
             queryset = queryset.filter(is_active=True).exclude(id=self.request.user.id)
-            
+
             match self.request.user.user_type:
                 case User.UserType.SURVEYOR:
                     raise PermissionDenied("You do not have permission to perform this action.")

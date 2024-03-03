@@ -3,6 +3,8 @@ from django.core.validators import MinValueValidator
 
 
 class CarbonSequestration(models.Model):
+    PROJECT_ID = 1
+
     land_parcel = models.OneToOneField('land_parcels.LandParcel', unique=True, on_delete=models.CASCADE)
     carbon_waiver_document = models.ForeignKey('files_manager.File', related_name='carbon_waiver_document', on_delete=models.CASCADE)
     agreement_document_type = models.ForeignKey('files_manager.File', related_name='agreement_document_type', on_delete=models.CASCADE)

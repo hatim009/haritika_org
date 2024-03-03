@@ -18,7 +18,7 @@ class CarbonSequestrationViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['put'], name='Update model progress')
     def progress(self, request, pk=None):
         carbon_sequestration = self.get_object()
-        progress_id_instance_map = {'-'.join([str(progress.carbon_sequestration.id), progress.model.name]): progress for progress in carbon_sequestration.progress.all()}
+        progress_id_instance_map = {'-'.join([str(progress.carbon_sequestration.id), progress.model.name]): progress for progress in carbon_sequestration.progress.all() if progress.model.is_active}
         carbon_sequestration_progress_serializer = CarbonSequestrationProgressSerializer(instance=progress_id_instance_map, data=request.data, many=True, source='progress')
         if carbon_sequestration_progress_serializer.is_valid():
             carbon_sequestration_progress_serializer.save()

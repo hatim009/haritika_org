@@ -58,7 +58,10 @@ class HasBlockPermission(BasePermission):
 
         obj_block = None
         if 'village' in request.data:
-            obj_block = VillagesDirectory.objects.get(pk = request.data['village']).block.code
+            try:
+                obj_block = VillagesDirectory.objects.get(pk = request.data['village']).block.code
+            except VillagesDirectory.DoesNotExist:
+                return False
         
         if not obj_block:
             return False

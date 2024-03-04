@@ -43,3 +43,15 @@ class CarbonSequestrationViewSet(viewsets.ModelViewSet):
         else:
             return Response(carbon_sequestration_progress_serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=True, methods=['put'], name='Conclude a Carbon Sequestration Project')
+    def conclude(self, request, pk=None):
+        carbon_sequestration = self.get_object()
+        carbon_sequestration.is_active = False
+        carbon_sequestration.save()
+
+    @action(detail=True, methods=['put'], name='Restart a concluded Carbon Sequestration Project')
+    def restart(self, request, pk=None):
+        carbon_sequestration = self.get_object()
+        carbon_sequestration.is_active = True
+        carbon_sequestration.save()

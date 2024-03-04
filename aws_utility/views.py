@@ -11,7 +11,7 @@ from .utils import generate_presigned_url, generate_presigned_post, S3Url
 class S3UploadUrlView(views.APIView):
     
     def get(self, request):
-        s3_key = "resources/files/" + request.data.get('key', uuid7str())
+        s3_key = "resources/files/" + request.query_params.get('key', uuid7str())
         
         url = generate_presigned_post(settings.HARITIKA_ORG_S3_BUCKET, s3_key)
         
@@ -22,7 +22,7 @@ class S3DownloadUrlView(views.APIView):
 
     def get(self, request):
         try:
-            s3_url = S3Url(request.data.get('s3_path'))
+            s3_url = S3Url(request.query_params.get('s3_path'))
             url = generate_presigned_url(s3_url.bucket, s3_url.key)
             return Response(url)
         except ValidationError as e:

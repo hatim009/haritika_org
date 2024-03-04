@@ -35,6 +35,10 @@ class CarbonSequestrationViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['put'], name='Update model progress')
     def progress(self, request, pk=None):
         carbon_sequestration = self.get_object()
+
+        if not carbon_sequestration.is_active:
+            return Response({'detail': 'Updation not allowed on concluded project.'},status=status.HTTP_403_FORBIDDEN)
+
         progress_id_instance_map = {'-'.join([str(progress.carbon_sequestration.id), progress.model.name]): progress for progress in carbon_sequestration.progress.all() if progress.model.is_active}
         carbon_sequestration_progress_serializer = CarbonSequestrationProgressSerializer(instance=progress_id_instance_map, data=request.data, many=True, source='progress')
         if carbon_sequestration_progress_serializer.is_valid():
@@ -49,9 +53,11 @@ class CarbonSequestrationViewSet(viewsets.ModelViewSet):
         carbon_sequestration = self.get_object()
         carbon_sequestration.is_active = False
         carbon_sequestration.save()
+        return Response({'detail': 'Carbon Sequestration project association %s concluded successfully.' % (pk)})
 
     @action(detail=True, methods=['put'], name='Restart a concluded Carbon Sequestration Project')
     def restart(self, request, pk=None):
         carbon_sequestration = self.get_object()
         carbon_sequestration.is_active = True
         carbon_sequestration.save()
+        return Response({'detail': 'Carbon Sequestration project association %s restarted successfully.' % (pk)})

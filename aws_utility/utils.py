@@ -113,7 +113,7 @@ def generate_presigned_post(bucket_name, object_name, fields=None, conditions=No
 
 
 def get_cloudfront_policy():
-    resource_url = settings.AWS_CLOUDFRONT_URL
+    resource_url = 'https://{cloudfront_domain}'.format(cloudfront_domain=settings.AWS_CLOUDFRONT_DOMAIN)
     current_epochtime  = int(time.time())
     expiry_in_epochtime = current_epochtime + settings.AWS_SIGNED_COOKIES_EXPIRATION
     return settings.AWS_SIGNED_COOKIES_CUSTOM_POLICY.replace(

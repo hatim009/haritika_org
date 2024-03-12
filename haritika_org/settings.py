@@ -25,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = base64.b64decode(os.environ.get('HARITIKA_ORG_BACKEND_SECRET_KEY')).decode('utf-8')
+SECRET_KEY = base64.b64decode(os.environ.get('HARITIKA_ORG_SECRET_KEY')).decode('utf-8')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('HARITIKA_ORG_BACKEND_DEBUG', 'False').lower() == 'true'
+DEBUG = os.environ.get('HARITIKA_ORG_DEBUG', 'False').lower() == 'true'
 
-ENV = os.environ.get('HARITIKA_ORG_BACKEND_ENV', 'Local')
+ENV = os.environ.get('HARITIKA_ORG_ENV', 'Local')
 
 if 'AwsElasticbean' == ENV:
     ALLOWED_HOSTS = ['haritika-org.ap-south-1.elasticbeanstalk.com']
@@ -71,9 +71,17 @@ REST_FRAMEWORK = {
     ),
 }
 
-RSA_PRIVATE_KEY = base64.b64decode(os.environ['RSA_PRIVATE_KEY']).decode('utf-8')
+RSA_PRIVATE_KEY = base64.b64decode(os.environ['HARITIKA_ORG_RSA_PRIVATE_KEY']).decode('utf-8')
 
-RSA_PUBLIC_KEY = base64.b64decode(os.environ['RSA_PUBLIC_KEY']).decode('utf-8')
+RSA_PUBLIC_KEY = base64.b64decode(os.environ['HARITIKA_ORG_RSA_PUBLIC_KEY']).decode('utf-8')
+
+AWS_CLOUDFRONT_URL = os.environ['HARITIKA_ORG_AWS_CLOUDFRONT_URL']
+
+AWS_SIGNED_COOKIES_EXPIRATION = int(os.environ.get('HARITIKA_ORG_AWS_SIGNED_COOKIES_EXPIRATION', 432000))
+
+AWS_SIGNED_COOKIES_CUSTOM_POLICY = """{"Statement":[{"Resource":"{{resource_url}}/resources/files/*","Condition":{"DateLessThan":{"AWS:EpochTime":{{expiry_in_epochtime}}}}}]}"""
+
+AWS_CLOUDFRONT_KEY_PAIR_ID = os.environ['HARITIKA_ORG_AWS_CLOUDFRONT_KEY_PAIR_ID']
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
@@ -108,11 +116,11 @@ WSGI_APPLICATION = 'haritika_org.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['RDS_DB_NAME'],
-        'USER': os.environ['RDS_USERNAME'],
-        'PASSWORD': base64.b64decode(os.environ['RDS_PASSWORD']).decode('utf-8'),
-        'HOST': os.environ['RDS_HOSTNAME'],
-        'PORT': os.environ['RDS_PORT'],
+        'NAME': os.environ['HARITIKA_ORG_RDS_DB_NAME'],
+        'USER': os.environ['HARITIKA_ORG_RDS_USERNAME'],
+        'PASSWORD': base64.b64decode(os.environ['HARITIKA_ORG_RDS_PASSWORD']).decode('utf-8'),
+        'HOST': os.environ['HARITIKA_ORG_RDS_HOSTNAME'],
+        'PORT': os.environ['HARITIKA_ORG_RDS_PORT'],
     }
 }
 
@@ -160,7 +168,7 @@ STATIC_ROOT = 'static'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-HARITIKA_ORG_S3_BUCKET = 'haritika-org'
+STATIC_HARITIKA_ORG_S3_BUCKET = os.environ['STATIC_HARITIKA_ORG_S3_BUCKET']
 
 BOTOCORE_CONFIG = Config(region_name='ap-south-1', signature_version='s3v4')
 

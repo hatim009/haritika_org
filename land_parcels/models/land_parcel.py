@@ -8,7 +8,7 @@ class LandParcel(models.Model):
         COMMUNITY = 'COMMUNITY', _('Community')
 
     ownership_type = models.CharField(max_length=20, choices=OwnershipType.choices, default=OwnershipType.PRIVATE)
-    farmer = models.ForeignKey('farmers.Farmer', related_name='owned_land_parcels', on_delete=models.CASCADE)
+    farmer = models.ForeignKey('farmers.Farmer', related_name='owned_land_parcels', null=True, on_delete=models.CASCADE)
     geo_trace = models.TextField()
     area = models.FloatField()
     khasra_number = models.CharField(max_length=100, unique=True)

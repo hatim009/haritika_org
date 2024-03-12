@@ -1,11 +1,13 @@
 from uuid_extensions import uuid7str
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 
 from rest_framework import views, status
 from rest_framework.response import Response
 
-from .utils import generate_presigned_url, generate_presigned_post, S3Url
+from .utils import (generate_presigned_url, generate_presigned_post, 
+                    S3Url, get_cloudfront_policy, get_cloudfront_signature, aws_b64encode)
 
 
 class S3UploadUrlView(views.APIView):
@@ -13,17 +15,21 @@ class S3UploadUrlView(views.APIView):
     def get(self, request):
         s3_key = "resources/files/" + request.query_params.get('key', uuid7str())
         
-        url = generate_presigned_post(settings.HARITIKA_ORG_S3_BUCKET, s3_key)
-        
+        url = generate_presigned_post(settings.STATIC_HARITIKA_ORG_S3_BUCKET, s3_key)
+
         return Response(url)
 
 
-class S3DownloadUrlView(views.APIView):
-
+class GetAwsSignedCookiesView(views.APIView):
     def get(self, request):
-        try:
-            s3_url = S3Url(request.query_params.get('s3_path'))
-            url = generate_presigned_url(s3_url.bucket, s3_url.key)
-            return Response(url)
-        except ValidationError as e:
-            return Response({'message': e.message}, status=status.HTTP_400_BAD_REQUEST)
+        cloudfront_policy = get_cloudfront_policy()
+        cloudfront_signature = get_cloudfront_signature(cloudfront_policy)
+        cloudfront_key_pair_id = settings.AWS_CLOUDFRONT_KEY_PAIR_ID
+
+        return Response({
+            'awsSignedCookies': {
+                'CloudFront-Policy': aws_b64encode(cloudfront_policy.encode('utf-8 ')),
+                'CloudFront-Signature': aws_b64encode(cloudfront_signature),
+                'CloudFront-Key-Pair-Id': cloudfront_key_pair_id
+            }
+        })

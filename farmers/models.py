@@ -46,5 +46,3 @@ class Farmer(models.Model):
         verbose_name = _("farmer")
         verbose_name_plural = _("farmers")
         db_table = "farmers"
-
-

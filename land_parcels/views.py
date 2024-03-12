@@ -45,4 +45,4 @@ class LandParcelViewSet(viewsets.ModelViewSet):
         with transaction.atomic():
             for land_parcel_picture in instance.land_parcel_pictures.all():
                 land_parcel_picture.picture.delete()
-            instance.delete()   
+            instance.delete()
